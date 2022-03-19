@@ -9,13 +9,10 @@ import RoomBlock from "../components/roomBlock";
 export default function HomeScreen(props) {
   const [data, setData] = useState({});
   const [loading, setLoading] = useState(true);
-  const existingParams = props.route.params;
-  const url = existingParams? `https://express-airbnb-api.herokuapp.com/rooms/${existingParams.id}`:`https://express-airbnb-api.herokuapp.com/rooms/`;
   useEffect(() => {
     const fetchData = async () => {
       try {
-        console.log("Im triggered with url " + url)
-        const response = await axios.get(url);
+        const response = await axios.get(`https://express-airbnb-api.herokuapp.com/rooms/`);
         setData(response.data);
         setLoading(false);
       }
@@ -24,15 +21,10 @@ export default function HomeScreen(props) {
       }
     }
     fetchData();
-  }, [url]);
+  }, []);
 
   return loading? <ActivityIndicator size="large" color="tomato" style={{ marginTop: 100 }} />:
-  ( 
-    //If param, then go to room/:id else go to room
-    existingParams? 
-    <RoomBlock data={data}/>
-    :
-    <SafeAreaView>
+  (<SafeAreaView>
       <FlatList
         data = {data}
         keyExtractor = {(item) => {return item._id}}

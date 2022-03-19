@@ -10,7 +10,7 @@ export default function FlatBlock({id, item}) {
     stars.push(<FontAwesome key={i} name="star" size={24} color="#FFB621" />)
     };
     return (
-        <TouchableOpacity onPress={() => navigation.navigate("Home", { id: id })} style={styles.container}>
+        <TouchableOpacity onPress={() => navigation.navigate("Room", { id: id })} style={styles.container}>
         <Image
           source={{uri: item.photos[0].url}}
           style={styles.image}

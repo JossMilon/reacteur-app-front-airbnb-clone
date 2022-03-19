@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { NavigationContainer } from "@react-navigation/native";
+import { NavigationContainer} from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { Ionicons } from "@expo/vector-icons";
 import HomeScreen from "./containers/HomeScreen";
+import RoomScreen from "./containers/RoomScreen";
 import ProfileScreen from "./containers/ProfileScreen";
 import SignInScreen from "./containers/SignInScreen";
 import SignUpScreen from "./containers/SignUpScreen";
@@ -12,6 +13,8 @@ import SettingsScreen from "./containers/SettingsScreen";
 import SplashScreen from "./containers/SplashScreen";
 
 import LogoTitle from "./components/logoTitle";
+import BackButton from "./components/backButton";
+import AroundMe from "./containers/AoundMeScreen";
 
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
@@ -97,7 +100,15 @@ export default function App() {
                       >
                         {(props) => <HomeScreen {...props} />}
                       </Stack.Screen>
-
+                      <Stack.Screen
+                        name="Room"
+                        options={{
+                          headerTitle: () => <LogoTitle />,
+                          headerLeft: () => <BackButton />
+                        }}
+                      >
+                        {(props) => <RoomScreen {...props} />}
+                      </Stack.Screen>
                       <Stack.Screen
                         name="Profile"
                         options={{
@@ -105,6 +116,28 @@ export default function App() {
                         }}
                       >
                         {() => <ProfileScreen />}
+                      </Stack.Screen>
+                    </Stack.Navigator>
+                  )}
+                </Tab.Screen>
+                <Tab.Screen
+                  name="TabAroundMe"
+                  options={{
+                    tabBarLabel: "Around Me",
+                    tabBarIcon: ({ color, size }) => (
+                      <Ionicons name={"location-outline"} size={size} color={color} />
+                    ),
+                  }}
+                >
+                  {() => (
+                    <Stack.Navigator>
+                      <Stack.Screen
+                        name="AroundMe"
+                        options={{
+                          headerTitle: () => <LogoTitle />
+                        }}
+                      >
+                        {(props) => <AroundMe {...props} />}
                       </Stack.Screen>
                     </Stack.Navigator>
                   )}

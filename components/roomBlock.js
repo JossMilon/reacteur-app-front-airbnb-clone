@@ -1,7 +1,16 @@
-import { Text, View, ScrollView, StyleSheet, Dimensions, Image } from "react-native";
+import { Text, View, ScrollView, StyleSheet, Dimensions, Image, TouchableOpacity } from "react-native";
 import { FontAwesome } from '@expo/vector-icons';
+import { Entypo } from '@expo/vector-icons';
+import { useState } from "react";
+import MapView, { Marker } from "react-native-maps";
 
 export default function RoomBlock({data}) {
+    const [textShown, setTextShown] = useState(false);
+    const location = {
+      id: 1,
+      latitude: data.location[1],
+      longitude: data.location[0]
+    }
     let stars = [];
     for (let i=0; i < data.ratingValue; i++) {
     stars.push(<FontAwesome key={i} name="star" size={24} color="#FFB621" />)
@@ -27,8 +36,37 @@ export default function RoomBlock({data}) {
                     style={styles.avatar}
                 />
                 </View>
-                <Text ellipsizeMode="tail" numberOfLines={3}>{data.description}</Text>
+                <Text ellipsizeMode="tail" numberOfLines={textShown? 0: 3}>{data.description}</Text>
+                <TouchableOpacity
+                    onPress={() => {setTextShown(!textShown)}}
+                    title="Show text"
+                    style={styles.showText}
+                >
+                  {textShown? 
+                    <Text>
+                      Show more<Entypo name="chevron-down" size={16} color="black" />
+                    </Text>:
+                    <Text>
+                      Show less<Entypo name="chevron-up" size={16} color="black" backgroundColor="red" />
+                    </Text>}
+                </TouchableOpacity> 
             </View>
+            <MapView
+              style={styles.map}
+              initialRegion={{
+                latitude: location.latitude,
+                longitude: location.longitude,
+                latitudeDelta: 0.1,
+                longitudeDelta: 0.1
+              }}>
+                <MapView.Marker
+                  key={location.id}
+                  coordinate={{
+                    latitude: location.latitude,
+                    longitude: location.longitude,
+                  }}
+                />
+            </MapView>
         </ScrollView>
     )
 };
@@ -82,5 +120,14 @@ const styles = StyleSheet.create({
       borderRadius: 50,
       height: 80,
       width: 80,
+    },
+    showText: {
+      width: 90,
+      marginTop: 10,
+      justifyContent: "flex-end",
+    },
+    map: {
+      width: "100%",
+      height: 200,
     },
   });
