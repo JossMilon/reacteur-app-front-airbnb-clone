@@ -7,9 +7,7 @@ export default function BackButton() {
         <Button 
         title="Back"
         color="black"
-        onPress={() => {
-          navigation.navigate("Home");
-        }}
+        onPress={() => {navigation.goBack()}}
         />
     )
 };
