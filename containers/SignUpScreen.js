@@ -9,7 +9,7 @@ import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view
 //Importing components
 import InputField from "../components/InputField";
 
-export default function SignUpScreen({ setToken }) {
+export default function SignUpScreen({ setToken, setId }) {
   const [email, setEmail] = useState("");
   const [username, setUserName] = useState("");
   const [description, setDescription] = useState("");
@@ -25,7 +25,8 @@ export default function SignUpScreen({ setToken }) {
         password: password
       };
       const response = await axios.post("https://express-airbnb-api.herokuapp.com/user/sign_up", formData);
-      setToken(response.token);
+      setToken(response.data.token);
+      setId(response.data.id);
     }
     catch(error) {
         setError(error.response.data.error);
@@ -64,8 +65,8 @@ export default function SignUpScreen({ setToken }) {
               }
               else {
                 handlePress();
-                const userToken = null;
-                setToken(userToken);
+                // const userToken = null;
+                // setToken(userToken);
               }
             }}
           >

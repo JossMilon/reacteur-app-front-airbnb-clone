@@ -1,25 +1,25 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { useNavigation } from "@react-navigation/core";
-import { Button, Text, TextInput, View, TouchableOpacity, Image, StyleSheet } from "react-native";
-import axios from "axios";
-import { backgroundColor, borderLeftColor } from "react-native/Libraries/Components/View/ReactNativeStyleAttributes";
+import { Text, View, TouchableOpacity, Image, StyleSheet } from "react-native";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
+import axios from "axios";
 
 //Importing components
 import InputField from "../components/InputField";
 
-export default function SignInScreen({ setToken }) {
-  const [email, setEmail] = useState("Joss");
+export default function SignInScreen({ setToken, setId, userId, userToken }) {
+  const [email, setEmail] = useState("Josselin");
   const [password, setPassword] = useState("aze");
   const [error, setError] = useState(false);
   const handlePress = async () => {
     try {
       const response = await axios.post("https://express-airbnb-api.herokuapp.com/user/log_in", {email: email, password: password});
-      setToken(response.token);
+      setToken(response.data.token);
+      setId(response.data.id);
     }
     catch(error) {
-      console.log(error.response.data.error)
-      setError(error.response.data.error);
+      if (error.response) 
+      {setError(error.response.data.error)};
     }
   }
   const navigation = useNavigation();
@@ -49,8 +49,10 @@ export default function SignInScreen({ setToken }) {
               }
               else {
                 handlePress();
-                const userToken = null;
-                setToken(userToken);
+                console.log(userId);
+                console.log(userToken);
+                // const userToken = null;
+                // setToken(userToken);
               }
             }}
           >
@@ -86,12 +88,6 @@ const styles = StyleSheet.create({
   },
   inputForm: {
     width: "90%"
-  },
-  inputField: {
-    borderBottomWidth: 1,
-    borderBottomColor: "tomato",
-    paddingVertical: 5,
-    marginBottom: 20,
   },
   mainCta: {
     borderWidth: 2,

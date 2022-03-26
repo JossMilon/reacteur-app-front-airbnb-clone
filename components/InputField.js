@@ -1,8 +1,8 @@
 import { TextInput, StyleSheet } from "react-native"
 
-export default function InputField({setData, placeholder, password}) {
+export default function InputField({setData, data, placeholder, password}) {
     return (
-        <TextInput style={styles.inputField} onChangeText={(text) => {setData(text)}} placeholder={placeholder} secureTextEntry={password? true: false}/>
+        <TextInput style={styles.inputField} onChangeText={(text) => {setData(text)}} value={data} placeholder={placeholder} secureTextEntry={password? true: false}/>
     )
 }
 
